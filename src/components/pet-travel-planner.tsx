@@ -8,10 +8,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format, addDays, parseISO, differenceInDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { CalendarIcon, PlaneTakeoff, Heart, AlertTriangle, CheckCircle, Info, X } from 'lucide-react';
+import { CalendarIcon, PlaneTakeoff, Heart, AlertTriangle, CheckCircle, Info, X, MapPin, Clock, FileText, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
 import heroImage from '@/assets/hero-pet-travel.jpg';
 
 interface TravelPlan {
@@ -285,23 +286,43 @@ export default function PetTravelPlanner() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/5">
       {/* Hero Section */}
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-80 overflow-hidden border-b">
         <img 
           src={heroImage} 
           alt="Pet Travel" 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-accent/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/70 to-accent/80" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <PlaneTakeoff className="h-8 w-8" />
-              <Heart className="h-6 w-6 text-accent" />
+          <div className="text-center text-white max-w-4xl px-4">
+            <div className="flex items-center justify-center gap-3 mb-6 animate-fade-in">
+              <div className="p-3 bg-white/20 rounded-full backdrop-blur-sm">
+                <PlaneTakeoff className="h-10 w-10" />
+              </div>
+              <Heart className="h-8 w-8 text-accent animate-pulse" />
             </div>
-            <h1 className="text-4xl font-bold mb-2">Planejador de Viagem para Pets</h1>
-            <p className="text-xl opacity-90">Organize a viagem do seu pet com segurança e tranquilidade</p>
+            <h1 className="text-5xl font-bold mb-4 animate-fade-in">
+              Planejador de Viagem Pet Internacional 🐾
+            </h1>
+            <p className="text-xl opacity-95 animate-fade-in">
+              v2.0 - Organize a viagem do seu pet com cronograma personalizado e validações automáticas
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-6 text-sm opacity-90">
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4" />
+                <span>6 Destinos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                <span>Validações Automáticas</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>Cronograma Completo</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -309,18 +330,29 @@ export default function PetTravelPlanner() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Form Section */}
-          <Card className="shadow-medium">
-            <CardHeader>
-              <CardTitle className="text-2xl text-primary">Informações da Viagem</CardTitle>
-              <CardDescription>
-                Preencha os dados do seu pet e planeje a viagem internacional
+          <Card className="shadow-elegant border-0 bg-gradient-to-br from-card via-card to-muted/10">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 border-b">
+              <CardTitle className="text-2xl text-primary flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                  <PlaneTakeoff className="h-4 w-4 text-white" />
+                </div>
+                Informações da Viagem
+              </CardTitle>
+              <CardDescription className="text-base">
+                Preencha os dados do seu pet e planeje a viagem internacional com cronograma automático
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Pet Info */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Informações do Pet</h3>
+                  <div className="flex items-center gap-3 pb-2">
+                    <div className="w-6 h-6 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                      <Heart className="h-3 w-3 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">1. Informações do Pet e Destino</h3>
+                  </div>
+                  <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -404,7 +436,13 @@ export default function PetTravelPlanner() {
 
                 {/* Dates */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-foreground">Datas Importantes</h3>
+                  <div className="flex items-center gap-3 pb-2">
+                    <div className="w-6 h-6 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                      <CalendarIcon className="h-3 w-3 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground">2. Datas Essenciais (Formato: DD/MM/AAAA)</h3>
+                  </div>
+                  <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
                   
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -452,11 +490,6 @@ export default function PetTravelPlanner() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>Data da Coleta de Sangue</Label>
-                      {suggestedBloodDate && (
-                        <div className="text-sm text-muted-foreground mb-2">
-                          Sugestão: {formatDate(suggestedBloodDate)} (30 dias após vacina)
-                        </div>
-                      )}
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.bloodCollectionDate && "text-muted-foreground")}>
@@ -469,20 +502,22 @@ export default function PetTravelPlanner() {
                             mode="single"
                             selected={formData.bloodCollectionDate}
                             onSelect={(date) => setFormData(prev => ({ ...prev, bloodCollectionDate: date }))}
-                            className="pointer-events-auto"
+                            className={cn("p-3 pointer-events-auto")}
                           />
                         </PopoverContent>
                       </Popover>
-                      {suggestedBloodDate && !formData.bloodCollectionDate && (
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setFormData(prev => ({ ...prev, bloodCollectionDate: suggestedBloodDate }))}
-                          className="mt-2 text-primary"
-                        >
-                          Usar data sugerida
-                        </Button>
+                      {suggestedBloodDate && (
+                        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <div className="flex items-center gap-2">
+                            <Info className="h-4 w-4 text-blue-600" />
+                            <span className="text-sm font-medium text-blue-800">
+                              Sugestão Automática: {formatDate(suggestedBloodDate)}
+                            </span>
+                          </div>
+                          <p className="text-xs text-blue-600 mt-1">
+                            Data calculada automaticamente (30 dias após a vacina antirrábica)
+                          </p>
+                        </div>
                       )}
                     </div>
 
@@ -508,93 +543,172 @@ export default function PetTravelPlanner() {
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90">
-                  <PlaneTakeoff className="mr-2 h-4 w-4" />
-                  Gerar Cronograma de Viagem
-                </Button>
+                <div className="pt-4">
+                  <Separator className="bg-gradient-to-r from-primary/20 to-accent/20 mb-4" />
+                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg animate-fade-in">
+                    🚀 Gerar Cronograma Completo
+                  </Button>
+                </div>
               </form>
             </CardContent>
           </Card>
 
           {/* Results Section */}
           {plan && (
-            <Card className="shadow-medium">
-              <CardHeader>
-                <CardTitle className="text-2xl text-primary flex items-center gap-2">
-                  📅 Cronograma para {formData.petName.toUpperCase()}
-                  <Badge variant="secondary">{formData.destination}</Badge>
+            <Card className="shadow-elegant border-0 bg-gradient-to-br from-card via-card to-muted/20 animate-fade-in">
+              <CardHeader className="border-b bg-gradient-to-r from-primary/5 to-accent/5">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-full h-1 bg-gradient-to-r from-primary via-accent to-primary rounded-full"></div>
+                </div>
+                <CardTitle className="text-2xl text-center text-primary flex items-center justify-center gap-3">
+                  📅 CRONOGRAMA DE VIAGEM PARA {formData.petName.toUpperCase()}
                 </CardTitle>
+                <CardDescription className="text-center text-lg font-medium">
+                  DESTINO: {formData.destination.toUpperCase()} {formData.species === 'Cão' ? '🐕' : '🐱'}
+                </CardDescription>
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-full h-1 bg-gradient-to-r from-primary via-accent to-primary rounded-full"></div>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-8 p-8">
+                {/* Validations */}
                 {plan.validations.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Validações Iniciais</h3>
-                    <div className="space-y-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 pb-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                        <Shield className="h-4 w-4 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-foreground">VALIDAÇÕES INICIAIS</h3>
+                    </div>
+                    <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
+                    <div className="space-y-3">
                       {plan.validations.map((item, index) => (
-                        <div key={index} className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
+                        <div key={index} className={cn(
+                          "flex items-start gap-3 p-4 rounded-xl border transition-all duration-200 hover:shadow-md",
+                          item.status === 'OK' && "bg-green-50 border-green-200 hover:bg-green-100",
+                          item.status === 'ALERTA' && "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
+                          item.status === 'INFO' && "bg-blue-50 border-blue-200 hover:bg-blue-100",
+                          item.status === 'ERRO' && "bg-red-50 border-red-200 hover:bg-red-100"
+                        )}>
                           <StatusIcon status={item.status} />
-                          <span className="text-sm">{item.text}</span>
+                          <span className="text-sm font-medium leading-relaxed">{item.text}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
 
+                {/* Travel Dates */}
                 {plan.travelDates.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Prazos da Viagem</h3>
-                    <div className="space-y-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 pb-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                        <Clock className="h-4 w-4 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-foreground">PRAZOS DA VIAGEM</h3>
+                    </div>
+                    <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
+                    <div className="space-y-3">
                       {plan.travelDates.map((item, index) => (
-                        <div key={index} className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
+                        <div key={index} className={cn(
+                          "flex items-start gap-3 p-4 rounded-xl border transition-all duration-200 hover:shadow-md",
+                          item.status === 'OK' && "bg-green-50 border-green-200 hover:bg-green-100",
+                          item.status === 'ALERTA' && "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
+                          item.status === 'INFO' && "bg-blue-50 border-blue-200 hover:bg-blue-100",
+                          item.status === 'ERRO' && "bg-red-50 border-red-200 hover:bg-red-100"
+                        )}>
                           <StatusIcon status={item.status} />
-                          <span className="text-sm">{item.text}</span>
+                          <span className="text-sm font-medium leading-relaxed">{item.text}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
 
+                {/* Documentation */}
                 {plan.documentation.length > 0 && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Documentação e Procedimentos</h3>
-                    <div className="space-y-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 pb-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                        <FileText className="h-4 w-4 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-foreground">DOCUMENTAÇÃO E PROCEDIMENTOS FINAIS</h3>
+                    </div>
+                    <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
+                    <div className="space-y-3">
                       {plan.documentation.map((item, index) => (
-                        <div key={index} className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
+                        <div key={index} className={cn(
+                          "flex items-start gap-3 p-4 rounded-xl border transition-all duration-200 hover:shadow-md",
+                          item.status === 'OK' && "bg-green-50 border-green-200 hover:bg-green-100",
+                          item.status === 'ALERTA' && "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
+                          item.status === 'INFO' && "bg-blue-50 border-blue-200 hover:bg-blue-100",
+                          item.status === 'ERRO' && "bg-red-50 border-red-200 hover:bg-red-100"
+                        )}>
                           <StatusIcon status={item.status} />
-                          <span className="text-sm">{item.text}</span>
+                          <span className="text-sm font-medium leading-relaxed">{item.text}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
 
+                {/* Antiparasitic */}
                 {plan.antiparasitic && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Tratamento Antiparasitário</h3>
-                    <div className="space-y-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 pb-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                        <Shield className="h-4 w-4 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-foreground">TRATAMENTO ANTIPARASITÁRIO</h3>
+                    </div>
+                    <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
+                    <div className="space-y-3">
                       {plan.antiparasitic.map((item, index) => (
-                        <div key={index} className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
+                        <div key={index} className={cn(
+                          "flex items-start gap-3 p-4 rounded-xl border transition-all duration-200 hover:shadow-md",
+                          item.status === 'OK' && "bg-green-50 border-green-200 hover:bg-green-100",
+                          item.status === 'ALERTA' && "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
+                          item.status === 'INFO' && "bg-blue-50 border-blue-200 hover:bg-blue-100",
+                          item.status === 'ERRO' && "bg-red-50 border-red-200 hover:bg-red-100"
+                        )}>
                           <StatusIcon status={item.status} />
-                          <span className="text-sm">{item.text}</span>
+                          <span className="text-sm font-medium leading-relaxed">{item.text}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
 
+                {/* Airport */}
                 {plan.airport && (
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-foreground">Aeroporto e Facility</h3>
-                    <div className="space-y-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 pb-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+                        <MapPin className="h-4 w-4 text-white" />
+                      </div>
+                      <h3 className="text-xl font-bold text-foreground">AEROPORTO E FACILITY</h3>
+                    </div>
+                    <Separator className="bg-gradient-to-r from-primary/20 to-accent/20" />
+                    <div className="space-y-3">
                       {plan.airport.map((item, index) => (
-                        <div key={index} className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
+                        <div key={index} className={cn(
+                          "flex items-start gap-3 p-4 rounded-xl border transition-all duration-200 hover:shadow-md",
+                          item.status === 'OK' && "bg-green-50 border-green-200 hover:bg-green-100",
+                          item.status === 'ALERTA' && "bg-yellow-50 border-yellow-200 hover:bg-yellow-100",
+                          item.status === 'INFO' && "bg-blue-50 border-blue-200 hover:bg-blue-100",
+                          item.status === 'ERRO' && "bg-red-50 border-red-200 hover:bg-red-100"
+                        )}>
                           <StatusIcon status={item.status} />
-                          <span className="text-sm">{item.text}</span>
+                          <span className="text-sm font-medium leading-relaxed">{item.text}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 )}
+
+                <div className="flex items-center justify-center pt-6">
+                  <div className="w-full h-1 bg-gradient-to-r from-primary via-accent to-primary rounded-full"></div>
+                </div>
               </CardContent>
             </Card>
           )}

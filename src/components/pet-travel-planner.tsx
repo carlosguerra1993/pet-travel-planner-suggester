@@ -447,65 +447,107 @@ export default function PetTravelPlanner() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>Data de Nascimento</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.birthDate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {formData.birthDate ? formatDate(formData.birthDate) : "Selecione"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={formData.birthDate}
-                            onSelect={(date) => setFormData(prev => ({ ...prev, birthDate: date }))}
-                            className="pointer-events-auto"
-                            disabled={(date) => date > new Date()}
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div className="flex gap-2">
+                        <Input
+                          type="date"
+                          value={formData.birthDate ? format(formData.birthDate, 'yyyy-MM-dd') : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setFormData(prev => ({ ...prev, birthDate: date }));
+                          }}
+                          className="flex-1"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" size="icon" className="shrink-0">
+                              <CalendarIcon className="h-4 w-4" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={formData.birthDate}
+                              onSelect={(date) => setFormData(prev => ({ ...prev, birthDate: date }))}
+                              className="pointer-events-auto"
+                              disabled={(date) => date > new Date()}
+                              locale={ptBR}
+                              captionLayout="dropdown"
+                              fromYear={1990}
+                              toYear={new Date().getFullYear()}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </div>
 
                     <div>
                       <Label>Data da Vacina Antirrábica</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.vaccineDate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {formData.vaccineDate ? formatDate(formData.vaccineDate) : "Selecione"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={formData.vaccineDate}
-                            onSelect={(date) => setFormData(prev => ({ ...prev, vaccineDate: date }))}
-                            className="pointer-events-auto"
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div className="flex gap-2">
+                        <Input
+                          type="date"
+                          value={formData.vaccineDate ? format(formData.vaccineDate, 'yyyy-MM-dd') : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setFormData(prev => ({ ...prev, vaccineDate: date }));
+                          }}
+                          className="flex-1"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" size="icon" className="shrink-0">
+                              <CalendarIcon className="h-4 w-4" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={formData.vaccineDate}
+                              onSelect={(date) => setFormData(prev => ({ ...prev, vaccineDate: date }))}
+                              className="pointer-events-auto"
+                              locale={ptBR}
+                              captionLayout="dropdown"
+                              fromYear={2020}
+                              toYear={new Date().getFullYear() + 1}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label>Data da Coleta de Sangue</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.bloodCollectionDate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {formData.bloodCollectionDate ? formatDate(formData.bloodCollectionDate) : "Selecione"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={formData.bloodCollectionDate}
-                            onSelect={(date) => setFormData(prev => ({ ...prev, bloodCollectionDate: date }))}
-                            className={cn("p-3 pointer-events-auto")}
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div className="flex gap-2">
+                        <Input
+                          type="date"
+                          value={formData.bloodCollectionDate ? format(formData.bloodCollectionDate, 'yyyy-MM-dd') : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setFormData(prev => ({ ...prev, bloodCollectionDate: date }));
+                          }}
+                          className="flex-1"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" size="icon" className="shrink-0">
+                              <CalendarIcon className="h-4 w-4" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={formData.bloodCollectionDate}
+                              onSelect={(date) => setFormData(prev => ({ ...prev, bloodCollectionDate: date }))}
+                              className={cn("p-3 pointer-events-auto")}
+                              locale={ptBR}
+                              captionLayout="dropdown"
+                              fromYear={2020}
+                              toYear={new Date().getFullYear() + 2}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                       {suggestedBloodDate && (
                         <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                           <div className="flex items-center gap-2">
@@ -523,22 +565,36 @@ export default function PetTravelPlanner() {
 
                     <div>
                       <Label>Data Planejada da Viagem</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.travelDate && "text-muted-foreground")}>
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {formData.travelDate ? formatDate(formData.travelDate) : "Selecione"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={formData.travelDate}
-                            onSelect={(date) => setFormData(prev => ({ ...prev, travelDate: date }))}
-                            className="pointer-events-auto"
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <div className="flex gap-2">
+                        <Input
+                          type="date"
+                          value={formData.travelDate ? format(formData.travelDate, 'yyyy-MM-dd') : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setFormData(prev => ({ ...prev, travelDate: date }));
+                          }}
+                          className="flex-1"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button variant="outline" size="icon" className="shrink-0">
+                              <CalendarIcon className="h-4 w-4" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={formData.travelDate}
+                              onSelect={(date) => setFormData(prev => ({ ...prev, travelDate: date }))}
+                              className="pointer-events-auto"
+                              locale={ptBR}
+                              captionLayout="dropdown"
+                              fromYear={new Date().getFullYear()}
+                              toYear={new Date().getFullYear() + 3}
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                     </div>
                   </div>
                 </div>

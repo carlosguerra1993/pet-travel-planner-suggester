@@ -424,8 +424,8 @@ export default function PetTravelPlanner() {
                             id="weightKg"
                             type="number"
                             step="0.1"
-                            value={formData.weightKg}
-                            onChange={(e) => setFormData(prev => ({ ...prev, weightKg: Number(e.target.value) }))}
+                            value={formData.weightKg || ''}
+                            onChange={(e) => setFormData(prev => ({ ...prev, weightKg: Number(e.target.value) || 0 }))}
                             placeholder="Ex: 9.5"
                           />
                         </div>
@@ -535,6 +535,7 @@ export default function PetTravelPlanner() {
                               onSelect={(date) => setFormData(prev => ({ ...prev, bloodCollectionDate: date }))}
                               className="pointer-events-auto"
                               locale={ptBR}
+                              defaultMonth={formData.bloodCollectionDate || suggestedBloodDate}
                             />
                           </PopoverContent>
                         </Popover>

@@ -471,9 +471,6 @@ export default function PetTravelPlanner() {
                               className="pointer-events-auto"
                               disabled={(date) => date > new Date()}
                               locale={ptBR}
-                              captionLayout="dropdown"
-                              fromYear={1990}
-                              toYear={new Date().getFullYear()}
                             />
                           </PopoverContent>
                         </Popover>
@@ -505,9 +502,6 @@ export default function PetTravelPlanner() {
                               onSelect={(date) => setFormData(prev => ({ ...prev, vaccineDate: date }))}
                               className="pointer-events-auto"
                               locale={ptBR}
-                              captionLayout="dropdown"
-                              fromYear={2020}
-                              toYear={new Date().getFullYear() + 1}
                             />
                           </PopoverContent>
                         </Popover>
@@ -539,11 +533,8 @@ export default function PetTravelPlanner() {
                               mode="single"
                               selected={formData.bloodCollectionDate}
                               onSelect={(date) => setFormData(prev => ({ ...prev, bloodCollectionDate: date }))}
-                              className={cn("p-3 pointer-events-auto")}
+                              className="pointer-events-auto"
                               locale={ptBR}
-                              captionLayout="dropdown"
-                              fromYear={2020}
-                              toYear={new Date().getFullYear() + 2}
                             />
                           </PopoverContent>
                         </Popover>
@@ -588,9 +579,6 @@ export default function PetTravelPlanner() {
                               onSelect={(date) => setFormData(prev => ({ ...prev, travelDate: date }))}
                               className="pointer-events-auto"
                               locale={ptBR}
-                              captionLayout="dropdown"
-                              fromYear={new Date().getFullYear()}
-                              toYear={new Date().getFullYear() + 3}
                             />
                           </PopoverContent>
                         </Popover>

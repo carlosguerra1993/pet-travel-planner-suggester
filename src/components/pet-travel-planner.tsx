@@ -449,12 +449,46 @@ export default function PetTravelPlanner() {
                       <Label>Data de Nascimento</Label>
                       <div className="flex gap-2">
                         <Input
-                          type="date"
-                          value={formData.birthDate ? format(formData.birthDate, 'yyyy-MM-dd') : ''}
+                          type="text"
+                          value={formData.birthDate ? format(formData.birthDate, 'dd/MM/yyyy') : ''}
                           onChange={(e) => {
-                            const date = e.target.value ? new Date(e.target.value) : undefined;
-                            setFormData(prev => ({ ...prev, birthDate: date }));
+                            const value = e.target.value;
+                            // Permitir apenas números e barras
+                            const cleanValue = value.replace(/[^\d/]/g, '');
+                            
+                            // Aplicar máscara DD/MM/AAAA
+                            let maskedValue = cleanValue;
+                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
+                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
+                            }
+                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
+                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
+                            }
+                            
+                            // Limitar a 10 caracteres (DD/MM/AAAA)
+                            maskedValue = maskedValue.slice(0, 10);
+                            
+                            // Tentar converter para data se formato completo
+                            if (maskedValue.length === 10) {
+                              const [day, month, year] = maskedValue.split('/');
+                              if (day && month && year && year.length === 4) {
+                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                                if (!isNaN(date.getTime())) {
+                                  setFormData(prev => ({ ...prev, birthDate: date }));
+                                  return;
+                                }
+                              }
+                            }
+                            
+                            // Se não conseguiu converter, limpar a data
+                            if (maskedValue.length < 10) {
+                              setFormData(prev => ({ ...prev, birthDate: undefined }));
+                            }
+                            
+                            // Atualizar o valor do input diretamente
+                            e.target.value = maskedValue;
                           }}
+                          placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
                         <Popover>
@@ -481,12 +515,46 @@ export default function PetTravelPlanner() {
                       <Label>Data da Vacina Antirrábica</Label>
                       <div className="flex gap-2">
                         <Input
-                          type="date"
-                          value={formData.vaccineDate ? format(formData.vaccineDate, 'yyyy-MM-dd') : ''}
+                          type="text"
+                          value={formData.vaccineDate ? format(formData.vaccineDate, 'dd/MM/yyyy') : ''}
                           onChange={(e) => {
-                            const date = e.target.value ? new Date(e.target.value) : undefined;
-                            setFormData(prev => ({ ...prev, vaccineDate: date }));
+                            const value = e.target.value;
+                            // Permitir apenas números e barras
+                            const cleanValue = value.replace(/[^\d/]/g, '');
+                            
+                            // Aplicar máscara DD/MM/AAAA
+                            let maskedValue = cleanValue;
+                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
+                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
+                            }
+                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
+                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
+                            }
+                            
+                            // Limitar a 10 caracteres (DD/MM/AAAA)
+                            maskedValue = maskedValue.slice(0, 10);
+                            
+                            // Tentar converter para data se formato completo
+                            if (maskedValue.length === 10) {
+                              const [day, month, year] = maskedValue.split('/');
+                              if (day && month && year && year.length === 4) {
+                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                                if (!isNaN(date.getTime())) {
+                                  setFormData(prev => ({ ...prev, vaccineDate: date }));
+                                  return;
+                                }
+                              }
+                            }
+                            
+                            // Se não conseguiu converter, limpar a data
+                            if (maskedValue.length < 10) {
+                              setFormData(prev => ({ ...prev, vaccineDate: undefined }));
+                            }
+                            
+                            // Atualizar o valor do input diretamente
+                            e.target.value = maskedValue;
                           }}
+                          placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
                         <Popover>
@@ -514,12 +582,46 @@ export default function PetTravelPlanner() {
                       <Label>Data da Coleta de Sangue</Label>
                       <div className="flex gap-2">
                         <Input
-                          type="date"
-                          value={formData.bloodCollectionDate ? format(formData.bloodCollectionDate, 'yyyy-MM-dd') : ''}
+                          type="text"
+                          value={formData.bloodCollectionDate ? format(formData.bloodCollectionDate, 'dd/MM/yyyy') : ''}
                           onChange={(e) => {
-                            const date = e.target.value ? new Date(e.target.value) : undefined;
-                            setFormData(prev => ({ ...prev, bloodCollectionDate: date }));
+                            const value = e.target.value;
+                            // Permitir apenas números e barras
+                            const cleanValue = value.replace(/[^\d/]/g, '');
+                            
+                            // Aplicar máscara DD/MM/AAAA
+                            let maskedValue = cleanValue;
+                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
+                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
+                            }
+                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
+                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
+                            }
+                            
+                            // Limitar a 10 caracteres (DD/MM/AAAA)
+                            maskedValue = maskedValue.slice(0, 10);
+                            
+                            // Tentar converter para data se formato completo
+                            if (maskedValue.length === 10) {
+                              const [day, month, year] = maskedValue.split('/');
+                              if (day && month && year && year.length === 4) {
+                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                                if (!isNaN(date.getTime())) {
+                                  setFormData(prev => ({ ...prev, bloodCollectionDate: date }));
+                                  return;
+                                }
+                              }
+                            }
+                            
+                            // Se não conseguiu converter, limpar a data
+                            if (maskedValue.length < 10) {
+                              setFormData(prev => ({ ...prev, bloodCollectionDate: undefined }));
+                            }
+                            
+                            // Atualizar o valor do input diretamente
+                            e.target.value = maskedValue;
                           }}
+                          placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
                         <Popover>
@@ -559,12 +661,46 @@ export default function PetTravelPlanner() {
                       <Label>Data Planejada da Viagem</Label>
                       <div className="flex gap-2">
                         <Input
-                          type="date"
-                          value={formData.travelDate ? format(formData.travelDate, 'yyyy-MM-dd') : ''}
+                          type="text"
+                          value={formData.travelDate ? format(formData.travelDate, 'dd/MM/yyyy') : ''}
                           onChange={(e) => {
-                            const date = e.target.value ? new Date(e.target.value) : undefined;
-                            setFormData(prev => ({ ...prev, travelDate: date }));
+                            const value = e.target.value;
+                            // Permitir apenas números e barras
+                            const cleanValue = value.replace(/[^\d/]/g, '');
+                            
+                            // Aplicar máscara DD/MM/AAAA
+                            let maskedValue = cleanValue;
+                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
+                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
+                            }
+                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
+                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
+                            }
+                            
+                            // Limitar a 10 caracteres (DD/MM/AAAA)
+                            maskedValue = maskedValue.slice(0, 10);
+                            
+                            // Tentar converter para data se formato completo
+                            if (maskedValue.length === 10) {
+                              const [day, month, year] = maskedValue.split('/');
+                              if (day && month && year && year.length === 4) {
+                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                                if (!isNaN(date.getTime())) {
+                                  setFormData(prev => ({ ...prev, travelDate: date }));
+                                  return;
+                                }
+                              }
+                            }
+                            
+                            // Se não conseguiu converter, limpar a data
+                            if (maskedValue.length < 10) {
+                              setFormData(prev => ({ ...prev, travelDate: undefined }));
+                            }
+                            
+                            // Atualizar o valor do input diretamente
+                            e.target.value = maskedValue;
                           }}
+                          placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
                         <Popover>

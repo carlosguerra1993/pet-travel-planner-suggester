@@ -36,6 +36,14 @@ export default function PetTravelPlanner() {
     weightKg: 0
   });
 
+  // Estados para os valores de texto dos inputs de data
+  const [dateInputs, setDateInputs] = useState({
+    birthDate: '',
+    vaccineDate: '',
+    bloodCollectionDate: '',
+    travelDate: ''
+  });
+
   const [plan, setPlan] = useState<TravelPlan | null>(null);
   const [suggestedBloodDate, setSuggestedBloodDate] = useState<Date | undefined>();
 
@@ -46,11 +54,59 @@ export default function PetTravelPlanner() {
       setSuggestedBloodDate(suggested);
       if (!formData.bloodCollectionDate) {
         setFormData(prev => ({ ...prev, bloodCollectionDate: suggested }));
+        setDateInputs(prev => ({ ...prev, bloodCollectionDate: format(suggested, 'dd/MM/yyyy') }));
       }
     }
   }, [formData.vaccineDate]);
 
+  // Sincronizar valores dos inputs quando as datas mudam pelo calendário
+  useEffect(() => {
+    setDateInputs(prev => ({
+      ...prev,
+      birthDate: formData.birthDate ? format(formData.birthDate, 'dd/MM/yyyy') : '',
+      vaccineDate: formData.vaccineDate ? format(formData.vaccineDate, 'dd/MM/yyyy') : '',
+      bloodCollectionDate: formData.bloodCollectionDate ? format(formData.bloodCollectionDate, 'dd/MM/yyyy') : '',
+      travelDate: formData.travelDate ? format(formData.travelDate, 'dd/MM/yyyy') : '',
+    }));
+  }, [formData.birthDate, formData.vaccineDate, formData.bloodCollectionDate, formData.travelDate]);
+
   const formatDate = (date: Date) => format(date, 'dd/MM/yyyy', { locale: ptBR });
+
+  // Função para lidar com a digitação de datas
+  const handleDateInput = (value: string, field: keyof typeof dateInputs) => {
+    // Permitir apenas números e barras
+    const cleanValue = value.replace(/[^\d/]/g, '');
+    
+    // Aplicar máscara DD/MM/AAAA
+    let maskedValue = cleanValue;
+    if (cleanValue.length >= 2 && !cleanValue.includes('/')) {
+      maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
+    }
+    if (cleanValue.length >= 4 && maskedValue.split('/').length === 2) {
+      const parts = maskedValue.split('/');
+      maskedValue = parts[0] + '/' + parts[1].slice(0, 2) + '/' + parts[1].slice(2);
+    }
+    
+    // Limitar a 10 caracteres (DD/MM/AAAA)
+    maskedValue = maskedValue.slice(0, 10);
+    
+    // Atualizar o input
+    setDateInputs(prev => ({ ...prev, [field]: maskedValue }));
+    
+    // Tentar converter para data se formato completo
+    if (maskedValue.length === 10) {
+      const [day, month, year] = maskedValue.split('/');
+      if (day && month && year && year.length === 4) {
+        const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+        if (!isNaN(date.getTime()) && date.getDate() == parseInt(day)) {
+          setFormData(prev => ({ ...prev, [field]: date }));
+        }
+      }
+    } else {
+      // Se não tem formato completo, limpar a data
+      setFormData(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
 
   const calculatePlan = (): TravelPlan => {
     const { species, destination, birthDate, vaccineDate, bloodCollectionDate, travelDate, airportUSA, weightKg } = formData;
@@ -450,44 +506,8 @@ export default function PetTravelPlanner() {
                       <div className="flex gap-2">
                         <Input
                           type="text"
-                          value={formData.birthDate ? format(formData.birthDate, 'dd/MM/yyyy') : ''}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Permitir apenas números e barras
-                            const cleanValue = value.replace(/[^\d/]/g, '');
-                            
-                            // Aplicar máscara DD/MM/AAAA
-                            let maskedValue = cleanValue;
-                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
-                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
-                            }
-                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
-                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
-                            }
-                            
-                            // Limitar a 10 caracteres (DD/MM/AAAA)
-                            maskedValue = maskedValue.slice(0, 10);
-                            
-                            // Tentar converter para data se formato completo
-                            if (maskedValue.length === 10) {
-                              const [day, month, year] = maskedValue.split('/');
-                              if (day && month && year && year.length === 4) {
-                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-                                if (!isNaN(date.getTime())) {
-                                  setFormData(prev => ({ ...prev, birthDate: date }));
-                                  return;
-                                }
-                              }
-                            }
-                            
-                            // Se não conseguiu converter, limpar a data
-                            if (maskedValue.length < 10) {
-                              setFormData(prev => ({ ...prev, birthDate: undefined }));
-                            }
-                            
-                            // Atualizar o valor do input diretamente
-                            e.target.value = maskedValue;
-                          }}
+                          value={dateInputs.birthDate}
+                          onChange={(e) => handleDateInput(e.target.value, 'birthDate')}
                           placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
@@ -516,44 +536,8 @@ export default function PetTravelPlanner() {
                       <div className="flex gap-2">
                         <Input
                           type="text"
-                          value={formData.vaccineDate ? format(formData.vaccineDate, 'dd/MM/yyyy') : ''}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Permitir apenas números e barras
-                            const cleanValue = value.replace(/[^\d/]/g, '');
-                            
-                            // Aplicar máscara DD/MM/AAAA
-                            let maskedValue = cleanValue;
-                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
-                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
-                            }
-                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
-                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
-                            }
-                            
-                            // Limitar a 10 caracteres (DD/MM/AAAA)
-                            maskedValue = maskedValue.slice(0, 10);
-                            
-                            // Tentar converter para data se formato completo
-                            if (maskedValue.length === 10) {
-                              const [day, month, year] = maskedValue.split('/');
-                              if (day && month && year && year.length === 4) {
-                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-                                if (!isNaN(date.getTime())) {
-                                  setFormData(prev => ({ ...prev, vaccineDate: date }));
-                                  return;
-                                }
-                              }
-                            }
-                            
-                            // Se não conseguiu converter, limpar a data
-                            if (maskedValue.length < 10) {
-                              setFormData(prev => ({ ...prev, vaccineDate: undefined }));
-                            }
-                            
-                            // Atualizar o valor do input diretamente
-                            e.target.value = maskedValue;
-                          }}
+                          value={dateInputs.vaccineDate}
+                          onChange={(e) => handleDateInput(e.target.value, 'vaccineDate')}
                           placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
@@ -583,44 +567,8 @@ export default function PetTravelPlanner() {
                       <div className="flex gap-2">
                         <Input
                           type="text"
-                          value={formData.bloodCollectionDate ? format(formData.bloodCollectionDate, 'dd/MM/yyyy') : ''}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Permitir apenas números e barras
-                            const cleanValue = value.replace(/[^\d/]/g, '');
-                            
-                            // Aplicar máscara DD/MM/AAAA
-                            let maskedValue = cleanValue;
-                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
-                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
-                            }
-                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
-                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
-                            }
-                            
-                            // Limitar a 10 caracteres (DD/MM/AAAA)
-                            maskedValue = maskedValue.slice(0, 10);
-                            
-                            // Tentar converter para data se formato completo
-                            if (maskedValue.length === 10) {
-                              const [day, month, year] = maskedValue.split('/');
-                              if (day && month && year && year.length === 4) {
-                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-                                if (!isNaN(date.getTime())) {
-                                  setFormData(prev => ({ ...prev, bloodCollectionDate: date }));
-                                  return;
-                                }
-                              }
-                            }
-                            
-                            // Se não conseguiu converter, limpar a data
-                            if (maskedValue.length < 10) {
-                              setFormData(prev => ({ ...prev, bloodCollectionDate: undefined }));
-                            }
-                            
-                            // Atualizar o valor do input diretamente
-                            e.target.value = maskedValue;
-                          }}
+                          value={dateInputs.bloodCollectionDate}
+                          onChange={(e) => handleDateInput(e.target.value, 'bloodCollectionDate')}
                           placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />
@@ -662,44 +610,8 @@ export default function PetTravelPlanner() {
                       <div className="flex gap-2">
                         <Input
                           type="text"
-                          value={formData.travelDate ? format(formData.travelDate, 'dd/MM/yyyy') : ''}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Permitir apenas números e barras
-                            const cleanValue = value.replace(/[^\d/]/g, '');
-                            
-                            // Aplicar máscara DD/MM/AAAA
-                            let maskedValue = cleanValue;
-                            if (cleanValue.length >= 2 && cleanValue[2] !== '/') {
-                              maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
-                            }
-                            if (cleanValue.length >= 5 && cleanValue[5] !== '/') {
-                              maskedValue = maskedValue.slice(0, 5) + '/' + maskedValue.slice(5);
-                            }
-                            
-                            // Limitar a 10 caracteres (DD/MM/AAAA)
-                            maskedValue = maskedValue.slice(0, 10);
-                            
-                            // Tentar converter para data se formato completo
-                            if (maskedValue.length === 10) {
-                              const [day, month, year] = maskedValue.split('/');
-                              if (day && month && year && year.length === 4) {
-                                const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-                                if (!isNaN(date.getTime())) {
-                                  setFormData(prev => ({ ...prev, travelDate: date }));
-                                  return;
-                                }
-                              }
-                            }
-                            
-                            // Se não conseguiu converter, limpar a data
-                            if (maskedValue.length < 10) {
-                              setFormData(prev => ({ ...prev, travelDate: undefined }));
-                            }
-                            
-                            // Atualizar o valor do input diretamente
-                            e.target.value = maskedValue;
-                          }}
+                          value={dateInputs.travelDate}
+                          onChange={(e) => handleDateInput(e.target.value, 'travelDate')}
                           placeholder="DD/MM/AAAA"
                           className="flex-1"
                         />

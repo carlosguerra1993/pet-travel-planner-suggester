@@ -78,17 +78,15 @@ export default function PetTravelPlanner() {
     const cleanValue = value.replace(/[^\d/]/g, '');
     
     // Aplicar máscara DD/MM/AAAA
-    let maskedValue = cleanValue;
-    if (cleanValue.length >= 2 && !cleanValue.includes('/')) {
-      maskedValue = cleanValue.slice(0, 2) + '/' + cleanValue.slice(2);
-    }
-    if (cleanValue.length >= 4 && maskedValue.split('/').length === 2) {
-      const parts = maskedValue.split('/');
-      maskedValue = parts[0] + '/' + parts[1].slice(0, 2) + '/' + parts[1].slice(2);
-    }
+    let maskedValue = '';
+    const numbers = cleanValue.replace(/\//g, '');
     
-    // Limitar a 10 caracteres (DD/MM/AAAA)
-    maskedValue = maskedValue.slice(0, 10);
+    for (let i = 0; i < numbers.length && i < 8; i++) {
+      if (i === 2 || i === 4) {
+        maskedValue += '/';
+      }
+      maskedValue += numbers[i];
+    }
     
     // Atualizar o input
     setDateInputs(prev => ({ ...prev, [field]: maskedValue }));
